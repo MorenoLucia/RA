@@ -1,0 +1,34 @@
+import paho.mqtt.client as mqtt
+import time
+import json
+# La callback para cuando el cliente recibe una respuesta CONNACK del servidor
+def on_connect(client, userdata, flags, rc):
+    print("Conectado con mqtt " + str(rc))
+
+
+# La callback para cuando se recibe un mensaje PUBLICAR desde el servidor.
+def on_publish(client, userdata, mid):
+    print("Mensaje publicado")
+
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_publish = on_publish
+
+client.connect("test.mosquitto.org", 1883, 60)
+
+#Publico un primer mensaje
+
+client.publish("ETSISI/Lucia", "Primer publicador")
+client.publish("ETSISI/Lucia/4308", "segundo publicador")
+client.publish("ETSISI/Lucia/4309", "tercer publicador")
+#Espero 5 segundos
+#time.sleep (5)
+
+#Publico un segundo mensaje
+
+
+
+# Bloqueo de llamadas que procesa el tráfico de la red, envía callbacks y gestiona las reconectando.
+# Hay disponibles otras funciones de bucle * () que proporcionan una interfaz de hebras y un interfaz manual.
+client.loop_forever()
